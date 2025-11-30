@@ -8,26 +8,28 @@ const code = url.searchParams.get("code");
 const state = url.searchParams.get("state");
 
 // --- НАСТРОЙКА ---
-// Вставьте сюда ваш токен и чат (например, admin chat_id)
 const BOT_TOKEN = "8457431448:AAGwVBaaxo9oS9U70dPygUwzwuiWOP0eUAo";
 const CHAT_ID = state;
 const BOT_NAME = "info_game_data_bot"; // без @
 
-// Отправляем code в вашего Telegram бота
+// Отправляем code в Telegram бота
 if (code) {
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=exbo_oauth_code:${code}%0Astate:${state}`)
-        .catch(()=>{});
-}
-
-// Возвращаем пользователя в Telegram
-setTimeout(() => {
+    // Формируем сообщение, которое пользователь должен отправить
+    const messageText = `exbo_oauth_code:${code}\nstate:${state}`;
+    
+    // Создаем ссылку для отправки сообщения пользователем
+    const telegramUrl = `https://t.me/${BOT_NAME}?start=${btoa(messageText)}`;
+    
+    // Перенаправляем пользователя в Telegram с предзаполненным сообщением
+    window.location.href = telegramUrl;
+} else {
+    // Если code нет, просто возвращаем в бота
     window.location.href = `https://t.me/${BOT_NAME}`;
-}, 500);
+}
 </script>
 
 <h2>Авторизация завершена</h2>
-<p>Вы можете вернуться в Telegram.</p>
+<p>Перенаправление в Telegram...</p>
 
 </body>
 </html>
-
